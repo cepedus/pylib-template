@@ -23,8 +23,14 @@ jobs:
       
       - name: Template sample project
         run: |
-          copier copy --trust --data 'project_name=sample_project' --data 'project_slug=sample-project' --data 'python_version=3.12' . ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
-      
+          copier copy \
+            --trust \
+            --data 'project_name=sample_project' \
+            --data 'project_slug=sample-project' \
+            --data 'python_version=3.12' \
+            --data 'main_branch_name=main' \
+            . ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
+
       - name: Run default tests
         run: |
           cd ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
