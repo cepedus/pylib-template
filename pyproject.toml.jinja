@@ -1,0 +1,96 @@
+[build-system]
+requires = ["hatchling", "uv-dynamic-versioning>=0.14.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+source = "uv-dynamic-versioning"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "{{project_name}}"
+]
+
+[tool.uv-dynamic-versioning]
+vcs = "git"
+style = "pep440"
+pattern = "default-unprefixed"
+bump = true
+
+[project]
+name = "{{project_slug}}"
+dynamic = ["version"]
+readme = "README.md"
+requires-python = ">={{python_version}}"
+dependencies = [
+]
+
+[tool.uv]
+default-groups = "all"
+required-version = '>=0.11.0'
+
+[dependency-groups]
+lint = [
+    "ruff>=0.16",
+    "pyrefly>=1",
+]
+dev = [
+    "prek>=0.4",
+    "pytest>=9",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = 'py{{python_version | replace('.', '')}}'
+force-exclude = true
+
+[tool.ruff.lint]
+preview = true
+select = [
+    "ERA",  # eradicate
+    "FAST", # fastapi
+    "YTT",  # flake8-2020
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "COM",  # flake8-commas
+    "C4",   # flake8-comprehensions
+    "INP",  # flake8-no-pep420
+    "PIE",  # flake8-pie
+    "PT",   # flake8-pytest-style
+    "RSE",  # flake8-raise
+    "RET",  # flake8-return
+    "SIM",  # flake8-simplify
+    "ARG",  # flake8-unused-arguments
+    "PTH",  # flake8-use-pathlib
+    "I",    # isort
+    "C90",  # mccabe
+    "PD",   # pandas-vet
+    "N",    # pep8-naming
+    "PERF", # Perflint
+    "E",    # pycodestyle
+    "W",    # pycodestyle
+    "DOC",  # pydoclint
+    "D",    # pydocstyle
+    "F",    # Pyflakes
+    "PLE",  # Error
+    "PLW",  # Warning
+    "UP",   # pyupgrade
+    "FURB", # refurb
+    "RUF",  # Ruff-specific rules
+]
+ignore = [
+    "COM812",  # missing-trailing-comma
+    "D100",    # undocumented-public-module
+    "D104",    # undocumented-public-package
+    "D107",    # undocumented-public-init
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pyrefly]
+python-version = "{{python_version}}"
+preset = "strict"
+project-includes = [
+    "{{project_name}}",
+    "tests"
+]

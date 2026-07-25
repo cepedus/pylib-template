@@ -1,0 +1,23 @@
+default_language_version:
+  python: "{{python_version}}"
+
+repos:
+  - repo: local
+    hooks:
+      - id: lint
+        name: lint
+        language: system
+        entry: uv run ruff check
+        types_or: [python, pyi, jupyter]
+
+      - id: format
+        name: format
+        language: system
+        entry: uv run ruff format --check
+        types_or: [python, pyi, jupyter]
+
+      - id: typing
+        name: typing
+        language: system
+        entry: uv run pyrefly check --summarize-errors
+        types: [python]

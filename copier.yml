@@ -1,0 +1,48 @@
+project_name:
+    type: str
+    help: What is your project name?
+    validator: >-
+        {% if not (project_name | regex_search('^([a-z0-9]([a-z0-9]|_[a-z0-9])*)\Z')) %}
+        Use lowercase letters, digits, and single underscores; start and end with a letter or digit.
+        {% endif %}
+
+project_slug:
+    type: str
+    help: What is your project slug?
+    default: "{{ project_name | replace('_', '-') }}"
+    validator: >-
+        {% if not (project_slug | regex_search('^([a-z0-9]([a-z0-9]|-[a-z0-9])*)\Z')) %}
+        Use lowercase letters, digits, and single hyphens; start and end with a letter or digit.
+        {% endif %}
+
+python_version:
+    type: str
+    help: Python version to use for the project (e.g. 3.12)
+    default: "3.12"
+    choices:
+        - "3.10"
+        - "3.11"
+        - "3.12"
+        - "3.13"
+        - "3.14"
+
+_exclude:
+  - "copier.yaml" # Default
+  - "copier.yml" # Default
+  - "~*" # Default
+  - "*.py[co]" # Default
+  - "__pycache__" # Default
+  - ".git" # Default
+  - ".DS_Store" # Default
+  - ".svn" # Default
+  - "README.md"
+  - ".github/workflows/test-template.yml"
+
+_tasks:
+  - "mv README-template.md README.md"
+  - "git init"
+  - "uv sync"
+  - "uv run ruff format" # Initial formatting for template EOL, EOF, etc.
+  - "uv run prek install"
+  - "git add ."
+  - "uv run prek run --all-files"

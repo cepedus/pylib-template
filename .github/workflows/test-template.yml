@@ -1,0 +1,31 @@
+name: Test template
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  TARGET_TEMPLATE_FOLDER: sample-project
+
+jobs:
+  setup-template:
+    name: python
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+      
+      - name: Set up Copier
+        run: uv tool install copier
+      
+      - name: Template sample project
+        run: |
+          copier copy --trust --data 'project_name=sample_project' --data 'project_slug=sample-project' --data 'python_version=3.12' . ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
+      
+      - name: Run default tests
+        run: |
+          cd ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
+          uv run pytest -q
