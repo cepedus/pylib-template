@@ -36,10 +36,12 @@ _exclude:
   - ".DS_Store" # Default
   - ".svn" # Default
   - "README.md"
+  - "LICENSE"
   - ".github/workflows/test-template.yml"
 
 _tasks:
-  - "mv README-template.md README.md"
+  - "mv README-template.md README.md" # Rename README-template.md to README.md
+  - "git config --global init.defaultBranch main" 
   - "git init"
   - "uv sync"
   - "uv run ruff format" # Initial formatting for template EOL, EOF, etc.
