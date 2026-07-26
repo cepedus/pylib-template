@@ -10,7 +10,9 @@ on:
 
 jobs:
   check-version:
-    if: ${{ startsWith(github.event.head_commit.message, '[RELEASE]') }}
+    if: |
+      startsWith(github.event.head_commit.message, '[RELEASE]') &&
+      github.event.workflow_run.conclusion == 'success'
     name: Check version
     runs-on: ubuntu-latest
     outputs:
