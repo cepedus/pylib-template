@@ -1,5 +1,7 @@
 # pylib-template
 
+[![Copier](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/copier-org/copier/master/img/badge/badge-black.json)](https://github.com/copier-org/copier)
+
 **A modern [Copier](https://copier.readthedocs.io/) template designed to quickly bootstrap Python library projects with best practices, tooling, and automation built-in.**
 
 ```bash
