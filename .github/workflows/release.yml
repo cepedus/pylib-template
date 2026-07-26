@@ -1,9 +1,8 @@
 name: Tag and release
 on:
-  push:
-    branches: [main]
   workflow_run:
     workflows: ["Test template"]
+    branches: [main]
     types:
       - completed
 
@@ -35,6 +34,8 @@ jobs:
     name: Tag and release
     runs-on: ubuntu-latest
     needs: check-version
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v7
