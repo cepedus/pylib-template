@@ -1,6 +1,6 @@
 project_name:
     type: str
-    help: What is your project name?
+    help: Project name. This will be used as the base folder name.
     validator: >-
         {% if not (project_name | regex_search('^([a-z0-9]([a-z0-9]|_[a-z0-9])*)\Z')) %}
         Use lowercase letters, digits, and single underscores; start and end with a letter or digit.
@@ -8,7 +8,7 @@ project_name:
 
 project_slug:
     type: str
-    help: What is your project slug?
+    help: Name to be used as the project slug. This will be used as the project name.
     default: "{{ project_name | replace('_', '-') }}"
     validator: >-
         {% if not (project_slug | regex_search('^([a-z0-9]([a-z0-9]|-[a-z0-9])*)\Z')) %}
@@ -43,7 +43,7 @@ _exclude:
   - ".svn" # Default
   - "README.md"
   - "LICENSE"
-  - ".github/workflows/test-template.yml"
+  - ".github"
 
 _tasks:
   - "mv README-template.md README.md" # Rename README-template.md to README.md

@@ -31,7 +31,7 @@ jobs:
             --data 'main_branch_name=main' \
             . ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
 
-      - name: Run default tests
+      - name: make ci
         run: |
           cd ${{ runner.temp }}/${TARGET_TEMPLATE_FOLDER}
-          uv run pytest -q
+          make ci

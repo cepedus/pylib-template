@@ -2,6 +2,10 @@
 
 **A modern [Copier](https://copier.readthedocs.io/) template designed to quickly bootstrap Python library projects with best practices, tooling, and automation built-in.**
 
+```bash
+copier copy --trust https://github.com/cepedus/pylib-template /path/to/new/project
+```
+
 ## Features
 
 The template provides:
@@ -33,7 +37,11 @@ When generating a new project, you'll be prompted for:
 
 ### `python_version`
 - **Choices**: 3.10, 3.11, 3.12 (default), 3.13, 3.14
-- **Default**: Python 3.12
+- **Default**: `3.12`
+
+### `main_branch_name`
+- **Choices**: Any git-valid branch name
+- **Default**: `main`
 
 ## Usage
 
@@ -44,3 +52,9 @@ To create a new project from this template:
 ```bash
 copier copy --trust https://github.com/cepedus/pylib-template /path/to/new/project
 ```
+
+Without the `--trust` option, the following actions will not be performed:
+- Initialize a `git` repository
+- Create a virtual environment
+- Install pre-commit hooks
+- Run hooks once
