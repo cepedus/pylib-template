@@ -2,3 +2,20 @@
 .idea
 .vscode
 .DS_Store
+
+# Base Python
+__pycache__/
+*.py[codz]
+*$py.class
+eggs/
+dist/
+sdist/
+wheels/
+.ipynb_checkpoints
+
+# CI
+.coverage
+.coverage.*
+.cache
+.pytest_cache/
+.ruff_cache/
