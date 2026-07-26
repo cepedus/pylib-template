@@ -1,5 +1,7 @@
 name: Tag and release
 on:
+  push:
+    branches: [main]
   workflow_run:
     workflows: ["Test template"]
     branches: [main]
