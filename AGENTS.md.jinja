@@ -1,0 +1,92 @@
+# AGENTS.md
+
+Project name: {{project_name}}
+Primary language: Python {{python_version}}
+
+Canonical source for how AI coding agents work in this repository.
+`CLAUDE.md`, `GEMINI.md`, `.cursor/rules/agents.mdc`, `.windsurf/rules/agents.md`,
+`.clinerules/agents.md`, `.kiro/steering/agents.md`, and `.github/copilot-instructions.md`
+all point back here — edit this file, not those. Run `scripts/check-agent-sync.sh`
+if you're unsure whether one of them has drifted.
+
+## 1. Three layers
+
+- **Source** — code, tests, specs, ADRs, commit/PR history. Ground truth. Agents
+  read it; they don't rewrite it to make the docs look right.
+- **Docs (the wiki)** — `docs/`. A synthesis of the source, organized per Diátaxis
+  (§4), kept current by `doc-librarian`.
+- **Schema** — this file plus `skills/`. Defines how agents behave and how the
+  other two layers stay healthy. Co-evolves with the project — see §6.
+
+## 2. Coding guardrails
+
+Full detail: `skills/minimal-by-default/SKILL.md`.
+
+Before adding code, work down this ladder and stop at the first rung that solves
+the problem: *does this need to exist → stdlib → platform feature → an
+already-installed dependency → one line → the minimum custom code that works.*
+
+Never shortcut: trust-boundary validation, data-loss handling, security,
+accessibility, or correctness under failure/concurrency. If a shortcut is taken
+deliberately elsewhere, mark it: `// TODO(minimal): <what was skipped, and when
+to revisit>`.
+
+## 3. Plan, then build, then review
+
+Full detail: `skills/plan-before-build/SKILL.md`, `skills/review-before-ship/SKILL.md`.
+
+For non-trivial work (new features, multi-file changes, anything with more than
+one reasonable approach): state the plan briefly, argue against it, *then* write
+code. After writing it, do one adversarial pass on the diff before calling the
+task done. Scale the ceremony to the task — a one-line fix needs neither step
+written out.
+
+## 4. Documentation system
+
+Full detail: `skills/doc-librarian/SKILL.md`. Framework: [diataxis.fr](https://diataxis.fr).
+
+| Content helps someone... | ...who is... | Goes in             |
+| ------------------------ | ------------ | ------------------- |
+| do something             | learning     | `docs/tutorials/`   |
+| do something             | working      | `docs/how-to/`      |
+| look something up        | working      | `docs/reference/`   |
+| understand something     | learning     | `docs/explanation/` |
+
+`docs/index.md` catalogs every page; `docs/log.md` is an append-only history
+(`## [YYYY-MM-DD] <ingest|edit|lint> | <title>`). Three operations keep it
+healthy: **ingest** new material into the right page(s) and update the
+index/log; **query** the index before searching page-by-page, and file good
+answers back as pages; **lint** periodically for orphan pages, stale claims,
+and mode-mixing.
+
+## 5. Skills
+
+| Skill                | Triggers on                        | Default |
+| -------------------- | ---------------------------------- | ------- |
+| `minimal-by-default` | any implementation work            | on      |
+| `plan-before-build`  | non-trivial work, before coding    | on      |
+| `review-before-ship` | non-trivial diffs, before shipping | on      |
+| `doc-librarian`      | writing/updating/auditing docs     | on      |
+| `concise-output`     | only if asked, or enabled below    | **off** |
+
+To turn `concise-output` on for this project, change its line above to `on`.
+
+## 6. Keeping this file alive
+
+This file should get better as the project teaches you things — if the same
+mistake gets corrected twice, write the rule here instead of re-explaining it
+next session. Give changes to this file slightly more scrutiny than a docs
+page: every future agent session reads it.
+
+## 7. Adding a new agent
+
+New tool reads a different rule-file location? Add a one-file pointer for it
+next to the others (copy the format of any existing adapter), add it to the
+list in `scripts/check-agent-sync.sh`, and it's covered.
+
+## Sources
+
+The patterns above are adapted, not copied, from: [Diátaxis](https://diataxis.fr) ·
+[Karpathy's LLM-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) ·
+[ponytail](https://github.com/dietrichgebert/ponytail) ·
+[caveman](https://github.com/juliusbrussee/caveman).

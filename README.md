@@ -60,3 +60,73 @@ Without the `--trust` option, the following actions will not be performed:
 - Create a virtual environment
 - Install pre-commit hooks
 - Run hooks once
+
+# Agentic development support
+
+A drop-in `AGENTS.md` + skills + docs structure for working with AI coding
+agents, built by combining four complementary ideas:
+
+- **[Diátaxis](https://diataxis.fr)** — a four-mode framework for organizing
+  documentation (tutorials / how-to / reference / explanation).
+- **[Karpathy's LLM-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)**
+  — treating a docs folder as a small, LLM-maintained wiki with a raw-source
+  layer, a synthesized layer, and a schema file governing both, kept
+  current with ingest/query/lint operations.
+- **[ponytail](https://github.com/dietrichgebert/ponytail)** — a YAGNI-first
+  ladder for how much code a task actually needs, with explicit carve-outs
+  for security, data safety, and accessibility.
+- **[caveman](https://github.com/juliusbrussee/caveman)** — the idea that an
+  agent's *prose* is a cost separate from its *substance*, packaged here as
+  an opt-in style toggle.
+
+None of these are copied verbatim — each is adapted into a plain-markdown
+convention that works with any agent that reads `AGENTS.md`-style files
+(Claude Code, Cursor, Codex, Copilot, Gemini CLI, Windsurf, Cline, Kiro...).
+
+## What's in here
+
+```
+AGENTS.md                      the canonical rulebook — start here
+CLAUDE.md, GEMINI.md, ...      thin per-agent pointers back to AGENTS.md
+skills/                        guardrail skills (SKILL.md format)
+  minimal-by-default/            build the least that works (ponytail)
+  plan-before-build/             adversarial plan review before coding
+  review-before-ship/            adversarial diff review before shipping
+  doc-librarian/                 Diataxis classification + wiki upkeep
+  concise-output/                opt-in terse-prose style (caveman)
+docs/                          the project's own documentation wiki
+  index.md, log.md               catalog + append-only change history
+  tutorials/, how-to/, reference/, explanation/   Diataxis's four modes
+scripts/
+  check-agent-sync.sh            verify no adapter file has drifted
+```
+
+## Design notes
+
+- **Four of the five skills are on by default; one (`concise-output`) is
+  opt-in.** Guardrails around correctness and simplicity shouldn't require
+  configuration; a terser voice is a preference, not a guardrail, so it
+  stays off unless asked for.
+- **The per-agent files are pointers, not copies.** ponytail's own repo
+  ships a rule-copy checker script because it duplicates rule text into six
+  separate rule files and has to keep them aligned by hand. This template
+  avoids that problem at the source: every adapter file (`CLAUDE.md`,
+  `.cursor/rules/agents.mdc`, etc.) contains nothing but a pointer back to
+  `AGENTS.md`, so there's only ever one copy of the actual rules to edit.
+  `scripts/check-agent-sync.sh` just confirms the pointer is still there.
+- **`AGENTS.md` stays short on purpose.** It's loaded every session by
+  every agent that reads it. Depth lives in `skills/`, which only loads
+  when a skill actually triggers — the same progressive-disclosure
+  principle Diataxis and the wiki pattern both rely on.
+- **This won't outgrow a small project and won't undersell a large one.**
+  `doc-librarian` explicitly says to stay with a flat `docs/index.md` until
+  it's genuinely not enough — no search infra, no vector store, no MCP
+  server bundled here. Add those later if you need them.
+
+## Keeping AGENTS.md alive
+
+Treat `AGENTS.md` the way the wiki pattern treats its schema file: it
+should change as the project teaches you things. If the same mistake gets
+corrected twice, that's a signal to write the rule into `AGENTS.md` instead
+of re-explaining it every session. Review changes to it with a bit more
+scrutiny than a docs page — every future agent session reads it.
