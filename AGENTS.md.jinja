@@ -31,6 +31,15 @@ accessibility, or correctness under failure/concurrency. If a shortcut is taken
 deliberately elsewhere, mark it: `// TODO(minimal): <what was skipped, and when
 to revisit>`.
 
+Style rules:
+- No `__all__`. Public API is what's importable; `__all__` is a second source
+  of truth that rots and needs ruff to keep it sorted.
+- No `from __future__ import annotations`. Use `Self` for forward refs.
+- Never populate `__init__` files unless explicitly asked. `__init__.py` stays
+  empty, but present, unless the request says otherwise.
+- Always use absolute imports (e.g. `from {{project_name}}.utils import X`), never
+  relative ones.
+
 ## 3. Plan, then build, then review
 
 Full detail: `skills/plan-before-build/SKILL.md`, `skills/review-before-ship/SKILL.md`.
