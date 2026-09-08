@@ -45,6 +45,7 @@ _exclude:
   - "LICENSE"
   - ".github"
   - "VERSION"
+  - "CONTRIBUTING.md"
 
 _tasks:
   - "mv README-template.md README.md" # Rename README-template.md to README.md
