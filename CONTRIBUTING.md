@@ -82,6 +82,12 @@ push to main
   (or prepend it in the squash-merge dialog). If you merge with a
   method that drops the title — e.g. a fast-forward merge or a PR
   titled without `[RELEASE]` — the release job won't trigger.
+- **`[RELEASE]`-titled PRs must bump `VERSION`.** The
+  `validate-release` workflow runs on every PR title edit
+  (`opened`/`edited`/`reopened`/`synchronize`) and fails the check if
+  `VERSION` isn't in the diff between the PR's base and head. It's
+  fast and cheap — if you don't want a release, drop the `[RELEASE]`
+  prefix from the title.
 - **Releases are tied to green CI.** A failing "Test template" run
   silently skips the release. There is no manual override in the
   workflow — fix CI and re-push.
